@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public UserResponse findById(UUID id){
-        User user = userRepository.findBuId(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", id.toString()));
 
         return userMapper.toResponse(user);
