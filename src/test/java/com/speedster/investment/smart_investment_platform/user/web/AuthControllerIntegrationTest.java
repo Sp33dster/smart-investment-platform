@@ -56,7 +56,7 @@ public class AuthControllerIntegrationTest extends AbstractIntegrationTest {
                 UserResponse.class
         );
 
-        // then
+        //then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().email()).isEqualTo("jan@example.com");

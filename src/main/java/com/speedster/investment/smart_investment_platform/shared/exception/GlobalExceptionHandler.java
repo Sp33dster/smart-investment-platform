@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse(
-                        "An unexpected error occured",
+                        "An unexpected error occurred",
                         500,
                         Instant.now()
                 ));
