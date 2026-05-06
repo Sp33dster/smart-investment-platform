@@ -14,7 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Builder
 @ToString(exclude = "user")
 public class Asset extends AuditableEntity {
@@ -49,15 +49,15 @@ public class Asset extends AuditableEntity {
     @Column
     private String notes;
 
-    public BigDecimal calculateGainLoss(){
+    public BigDecimal calculateGainLoss() {
         if (currentValue == null) return BigDecimal.ZERO;
         return currentValue.subtract(purchasePrice.multiply(quantity));
     }
 
-    public BigDecimal calculateGainLossPercent(){
+    public BigDecimal calculateGainLossPercent() {
         if (currentValue == null) return BigDecimal.ZERO;
         BigDecimal totalPurchase = purchasePrice.multiply(quantity);
-        if (totalPurchase.compareTo(BigDecimal.ZERO) == 0)) return BigDecimal.ZERO;
+        if (totalPurchase.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO;
         return currentValue.subtract(totalPurchase)
                 .divide(totalPurchase, 4, RoundingMode.HALF_UP)
                 .multiply(new BigDecimal("100"));
