@@ -9,6 +9,7 @@ public interface AssetRepository {
     Optional<Asset> findById(UUID id);
     List<Asset> findByUserId(UUID userId);
     List<Asset> findByUserIdAndAssetType(UUID userId, AssetType assetType);
+    List<Asset> findByAssetType(AssetType assetType);
     void deleteById(UUID id);
     boolean existsByIdAndUserId(UUID id, UUID userId);
 }

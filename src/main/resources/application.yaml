@@ -10,6 +10,10 @@ spring:
     username: investment_user
     password: investment_pass
     driver-class-name: org.postgresql.Driver
+  task:
+    scheduling:
+      pool:
+        size: 2
 
   jpa:
     hibernate:

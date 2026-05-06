@@ -6,12 +6,15 @@ import com.speedster.investment.smart_investment_platform.asset.application.dto.
 import com.speedster.investment.smart_investment_platform.asset.application.mapper.AssetMapper;
 import com.speedster.investment.smart_investment_platform.asset.domain.Asset;
 import com.speedster.investment.smart_investment_platform.asset.domain.AssetRepository;
+import com.speedster.investment.smart_investment_platform.asset.domain.AssetType;
+import com.speedster.investment.smart_investment_platform.market.application.MarketService;
 import com.speedster.investment.smart_investment_platform.shared.exception.ResourceNotFoundException;
 import com.speedster.investment.smart_investment_platform.user.domain.User;
 import com.speedster.investment.smart_investment_platform.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ public class AssetService {
     private final UserRepository userRepository;
     private final AssetMapper assetMapper;
     private final AssetOwnershipGuard ownershipGuard;
+    private final MarketService marketService;
 
     public AssetResponse createAsset(UUID userId, CreateAssetRequest request){
         User user = userRepository.findById(userId)
@@ -68,5 +72,21 @@ public class AssetService {
     public void deleteAsset(UUID assetId, UUID userId){
         ownershipGuard.getAssetForUser(assetId, userId);
         assetRepository.deleteById(assetId);
+    }
+
+    public AssetResponse updateAssetCurrentValue(UUID assetId, UUID userId) {
+        Asset asset = ownershipGuard.getAssetForUser(assetId, userId);
+
+        if (asset.getAssetType() == AssetType.GOLD) {
+            marketService.getCurrentPrice("XAU")
+                    .ifPresent(price -> {
+                        BigDecimal currentValue = price.getPrice()
+                                .multiply(asset.getQuantity());
+                        asset.setCurrentValue(currentValue);
+                        assetRepository.save(asset);
+                    });
+        }
+
+        return assetMapper.toResponse(asset);
     }
 }
