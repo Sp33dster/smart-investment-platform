@@ -37,3 +37,9 @@ application:
     jwt:
       secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
       expiration: 86400000
+market:
+  gold-api:
+    url: https://www.goldapi.io/api
+    api-key: goldapi-2f57b71f28cc999f9e9ac9b6bb3ee9e3-io
+    symbol: XAU
+    currency: PLN
