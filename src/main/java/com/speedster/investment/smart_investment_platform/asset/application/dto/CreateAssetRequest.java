@@ -26,5 +26,6 @@ public record CreateAssetRequest(
         @NotBlank(message = "Currency is required")
         String currency,
 
+        String externalId,
         String notes
 ) {}

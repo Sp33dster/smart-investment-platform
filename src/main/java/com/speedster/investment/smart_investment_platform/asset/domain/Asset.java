@@ -46,6 +46,9 @@ public class Asset extends AuditableEntity {
     @Column(nullable = false)
     private String currency;
 
+    @Column(name = "external_id")
+    private String externalId;
+
     @Column
     private String notes;
 

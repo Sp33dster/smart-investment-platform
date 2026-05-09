@@ -45,4 +45,12 @@ public class MarketController {
         priceSyncScheduler.syncGoldPrices();
         return ResponseEntity.ok("Gold price sync triggered successfully");
     }
+
+    @PostMapping("/sync/stocks")
+    @Operation(summary = "Manually trigger stock price sync (ADMIN only)")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> triggerStockSync() {
+        priceSyncScheduler.syncStockPrices();
+        return ResponseEntity.ok("Stock price sync triggered successfully");
+    }
 }

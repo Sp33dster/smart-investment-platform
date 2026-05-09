@@ -41,6 +41,7 @@ public class AssetService {
                 .quantity(request.quantity())
                 .purchasePrice(request.purchasePrice())
                 .currency(request.currency())
+                .externalId(request.externalId())
                 .notes(request.notes())
                 .build();
 
