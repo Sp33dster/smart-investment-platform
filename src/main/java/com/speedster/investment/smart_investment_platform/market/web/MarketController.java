@@ -1,6 +1,6 @@
 package com.speedster.investment.smart_investment_platform.market.web;
 
-import com.speedster.investment.smart_investment_platform.asset.application.PriceSyncScheduler;
+import com.speedster.investment.smart_investment_platform.market.application.PriceSyncScheduler;
 import com.speedster.investment.smart_investment_platform.market.application.MarketService;
 import com.speedster.investment.smart_investment_platform.market.application.dto.MarketPriceResponse;
 import com.speedster.investment.smart_investment_platform.market.domain.MarketPrice;
