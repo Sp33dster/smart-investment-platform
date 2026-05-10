@@ -1,14 +1,13 @@
 package com.speedster.investment.smart_investment_platform.asset.web;
 
-import com.speedster.investment.smart_investment_platform.asset.application.dto.AssetResponse;
-import com.speedster.investment.smart_investment_platform.asset.application.dto.CreateAssetRequest;
-import com.speedster.investment.smart_investment_platform.asset.application.dto.PortfolioSummaryResponse;
-import com.speedster.investment.smart_investment_platform.asset.application.dto.UpdateAssetRequest;
+import com.speedster.investment.smart_investment_platform.asset.application.dto.*;
 import com.speedster.investment.smart_investment_platform.asset.application.service.AssetService;
 import com.speedster.investment.smart_investment_platform.asset.application.service.PortfolioService;
 import com.speedster.investment.smart_investment_platform.shared.exception.ResourceNotFoundException;
 import com.speedster.investment.smart_investment_platform.user.domain.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -91,6 +90,26 @@ public class AssetController {
 
         UUID userId = getCurrentUserId(authentication);
         assetService.deleteAsset(id, userId);
+    }
+
+    @PatchMapping("/{id}/value")
+    @Operation(
+            summary = "Update current market value",
+            description = "Manual price update — only for LEGO assets. " +
+                    "Gold and stocks are updated automatically via scheduler."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Value updated"),
+            @ApiResponse(responseCode = "400", description = "Not a LEGO asset"),
+            @ApiResponse(responseCode = "403", description = "Asset belongs to another user")
+    })
+    public AssetResponse updateCurrentValue(
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateAssetValueRequest request,
+            Authentication authentication) {
+
+        UUID userId = getCurrentUserId(authentication);
+        return assetService.updateCurrentValue(id, userId, request);
     }
 
 }
