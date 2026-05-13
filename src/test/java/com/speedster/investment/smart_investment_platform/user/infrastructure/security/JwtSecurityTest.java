@@ -85,4 +85,48 @@ public class JwtSecurityTest {
         // then
         assertThat(isValid).isFalse();
     }
+
+    @Test
+    @DisplayName("Should generate token with correct email as subject")
+    void shouldGenerateTokenWithCorrectSubject() {
+        // given & when
+        String token = jwtService.generateToken(testUser);
+
+        // then
+        assertThat(jwtService.extractEmail(token))
+                .isEqualTo("jan@example.com");
+    }
+
+    @Test
+    @DisplayName("Should reject expired token")
+    void shouldRejectExpiredToken() {
+        // given
+        ReflectionTestUtils.setField(jwtService, "expiration", -1L);
+        String expiredToken = jwtService.generateToken(testUser);
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .builder()
+                .username("jan@example.com")
+                .password("hashedPassword")
+                .roles("USER")
+                .build();
+
+        // when
+        boolean isValid = jwtService.isTokenValid(expiredToken, userDetails);
+
+        // then
+        assertThat(isValid).isFalse();
+    }
+
+    @Test
+    @DisplayName("Should generate token with role claim")
+    void shouldGenerateTokenWithRoleClaim() {
+        // given & when
+        String token = jwtService.generateToken(testUser);
+
+        // then
+        assertThat(token.split("\\.")).hasSize(3);
+        assertThat(token).isNotBlank();
+    }
+
 }
