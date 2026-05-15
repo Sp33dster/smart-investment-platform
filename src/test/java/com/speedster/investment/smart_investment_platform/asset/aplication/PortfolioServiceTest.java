@@ -172,7 +172,7 @@ class PortfolioServiceTest {
 
         // then
         assertThat(summary.totalGainLossPercent())
-                .isEqualByComparingTo(new BigDecimal("33.3300"));
+                .isEqualByComparingTo(new BigDecimal("33.33"));
     }
 
     @Test

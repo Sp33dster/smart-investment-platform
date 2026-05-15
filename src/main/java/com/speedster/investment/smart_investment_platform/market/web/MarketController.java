@@ -53,4 +53,12 @@ public class MarketController {
         priceSyncScheduler.syncStockPrices();
         return ResponseEntity.ok("Stock price sync triggered successfully");
     }
+
+    @GetMapping("/price/{symbol}/latest")
+    @Operation(summary = "Get latest stored price for symbol")
+    public ResponseEntity<MarketPriceResponse> getLatestStoredPrice(@PathVariable String symbol){
+        return marketService.getLatestStoredPrice(symbol)
+                .map(price -> ResponseEntity.ok(toResponse(price)))
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

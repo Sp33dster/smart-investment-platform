@@ -3,6 +3,11 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      max-lifetime: 30000
 
   flyway:
     enabled: true

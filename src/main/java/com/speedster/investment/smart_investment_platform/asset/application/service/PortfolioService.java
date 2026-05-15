@@ -27,7 +27,8 @@ public class PortfolioService {
 
         BigDecimal totalPurchase = calculateToralPurchase(assets);
         BigDecimal totalCurrent = calculateTotalCurrent(assets);
-        BigDecimal totalGainLoss = totalCurrent.subtract(totalPurchase);
+        BigDecimal totalGainLoss = totalCurrent.subtract(totalPurchase)
+                .setScale(2, RoundingMode.HALF_UP);
         BigDecimal totalGainLossPercentage = calculatePercent(totalGainLoss, totalPurchase);
         Map<AssetType, BigDecimal> valueByType = calculateByType(assets);
 
@@ -44,7 +45,8 @@ public class PortfolioService {
     private BigDecimal calculateToralPurchase(List<Asset> assets){
         return assets.stream()
                 .map(a -> a.getPurchasePrice().multiply(a.getQuantity()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal calculateTotalCurrent(List<Asset> assets){
@@ -52,7 +54,8 @@ public class PortfolioService {
                 .map(a -> a.getCurrentValue() != null
                 ? a.getCurrentValue()
                 : a.getPurchasePrice().multiply(a.getQuantity()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add)
+                .setScale(2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal calculatePercent(BigDecimal gainLoss, BigDecimal totalPurchase){
@@ -61,7 +64,8 @@ public class PortfolioService {
         }
         return gainLoss
                 .divide(totalPurchase, 4, RoundingMode.HALF_UP)
-                .multiply(new BigDecimal("100"));
+                .multiply(new BigDecimal("100"))
+                .setScale(2,RoundingMode.HALF_UP);
     }
 
     private Map<AssetType, BigDecimal> calculateByType(List<Asset> assets){
